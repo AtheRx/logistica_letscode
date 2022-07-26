@@ -1,5 +1,7 @@
 Classes
-* Operação
+* Configuracao
+:: void leConfiguracao("caminho")
+	-> throw exception
 - LocalDate date
 - int qtdVariedade
 - int qtdPlantacoes
@@ -14,26 +16,69 @@ Classes
 - int limiteSupEsperaNoLagar
 - int limiteInfParaVoltarAOperar
 - int limiteDeInterrupcaoDaCarga
-
+:: get...
+	atributos
+*Operacao
+:: criaObjetos...
+:: exec
+	procura plantações desocupadas
+	gera caminhões
+	
 
 * Fazenda
+------------------------------------------
 - List<Plantacao> lista de plantações
+while tempoTotalDeExecucao < 2min
+
+------------------------------------------
 - Lagar lagar
 - Queue<Caminhao> fila de carga
-- double tempoTotalDeExecucao
-* Plantação
+- double tempoTotalDeCarga
+
+* Plantação Thread
 - boolean isOcupado
 - string variedade
-- int distânciaEmS
+- int distanciaEmS
 - double tempoExecucao
-* Caminhão
+:: carrega(Caminhao)
+	if !isOcupado
+		>isOcupado = true
+		::run
+			>sleep(caminhao.fatorMultDaCarga )
+			>tempoCarga
+
+	
+	
+	
+
+* Caminhão Thread
 - int capacidadeEmT
 - int fatorMultDaCarga <lido-conf>
 - int fatorMultDaDescarga <lido-conf>
+::run
+	sleep(plantacao.getDistancia)
+
 * Lagar
 - Queue<Caminhao> fila de espera
-- List<boolean> SiloDeDescarga
+- List<Silo> SiloDeDescarga
+- double tempoTotalDeCarga
 
+* Silo Thread
+- tempoDescarga
+- boolean isOcupado
+::run
+	if !isOcupado
+	:: descarrega(Caminhao)
+		>isOcupado = true
+		>sleep(caminhao.fatorMultDaDescarga )
+		>tempoDescarga
+
+* Relatório
+
+
+
+
+* abstract Lugar
 
 
 ------------
@@ -70,3 +115,7 @@ Configurações Gerais
 
 Finalização
 (1)	<lmt de execucao total por plantação>
+	
+
+
+
