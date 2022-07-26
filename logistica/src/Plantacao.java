@@ -1,32 +1,46 @@
-public class Plantacao extends Thread{
+public class Plantacao{
     private boolean isOcupado;
-    private int distanciaEmS;
-    private long tempoCarga;
+    private long distanciaEmS;
+    private long tempoDeCarga;
 
     private Caminhao caminhao;
     
     public Plantacao(int distanciaEmS, long tempoCarga ){
         this.distanciaEmS = distanciaEmS;
-        this.tempoCarga = tempoCarga;
+        this.tempoDeCarga = tempoCarga;
     }
 
     public long getTempoCarga() {
-        return tempoCarga;
+        return tempoDeCarga;
     }
-    public boolean carregaCaminhao(Caminhao caminhao){
-        if( isOcupado){
+    public void carregaCaminhao(Caminhao caminhao){
+        this.caminhao = caminhao;
+        if( this.isOcupado){
             throw new RuntimeException("Ocupado");
         }
 
-        this.caminhao = caminhao;
-        return true;
+        new Thread(this.caminhao.getId()) {
+
+            @Override
+            public void run() {
+                String threadName = Thread.currentThread().getName();
+                try {
+                    System.out.println(threadName + " Carregando...");
+                    Thread.sleep(tempoDeCarga*1000);
+                    System.out.println(threadName + " Carregado!");
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                
+            }
+            
+        }.start();
+        
+        
     }
-    @Override
-    public void run() {
-        isOcupado = true;
-        System.out.println("Carregando...");
- 
-    }
+
+
+
 
     
     // ::run

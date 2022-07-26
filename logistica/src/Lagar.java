@@ -1,4 +1,6 @@
+import java.util.List;
+
 public class Lagar {
-    private Silo silo;
+    private List<Silo> silos;
     private double tempoTotalDeDescarga;
 }
