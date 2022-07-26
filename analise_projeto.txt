@@ -1,0 +1,72 @@
+Classes
+* Operação
+- LocalDate date
+- int qtdVariedade
+- int qtdPlantacoes
+- Map<String,Integer> varidadeEQtd
+- Map<String,String> variedadeEDist
+- int qtdDeRecepcao
+- List<Integer> capacidadeTransCaminhao
+//Configurações gerais
+- List<Integer> capacidadeDeCarga
+- List<Integer> capacidadeDeDescarga
+- int fatorMultiplicador
+- int limiteSupEsperaNoLagar
+- int limiteInfParaVoltarAOperar
+- int limiteDeInterrupcaoDaCarga
+
+
+* Fazenda
+- List<Plantacao> lista de plantações
+- Lagar lagar
+- Queue<Caminhao> fila de carga
+- double tempoTotalDeExecucao
+* Plantação
+- boolean isOcupado
+- string variedade
+- int distânciaEmS
+- double tempoExecucao
+* Caminhão
+- int capacidadeEmT
+- int fatorMultDaCarga <lido-conf>
+- int fatorMultDaDescarga <lido-conf>
+* Lagar
+- Queue<Caminhao> fila de espera
+- List<boolean> SiloDeDescarga
+
+
+
+------------
+Fase 01
+> leitura do arquivo e configuração dos parâmetros iniciais 
+Fase 02
+> carga e descarga
+Fase 03
+> relatório na descarga
+--------------
+Fluxo da fase 01
+Padrões:
+qtd Conf
+	argumento
+\n
+qtd Conf 
+	argumento
+\n
+
+Padrões
+Data <não qtd>
+3 Variedades de Azeitonas<tem qtd>
+5 Plantações de Azeitonas<tem qtd>
+	Galega <tem qtd> distância <tem qtd>
+3 Capacidades de Recepção no lagar em simultâneo. <tem qtd>
+
+Capacidade dos Caminhões de transporte <tem lmt inf e lmt sup>
+Configurações Gerais
+(1)	plantação caminhão  <tem lmt inf e lmt sup>
+(2)	recepção <tem lmt inf e lmt sup>
+(3)	<fator multiplicador>
+(4) 	<lmt fila no lagar>
+(5)	<lmt inferior no lagar>
+
+Finalização
+(1)	<lmt de execucao total por plantação>
