@@ -2,6 +2,7 @@ public class Plantacao {
     private String nomeVariedadeAzeitona;
     private Integer tempoAteLagar;
     private Boolean isOcupado;
+    private Boolean travaProducao;
     private Integer tempoCarga;
 
     public Plantacao(String nomeVariedadeAzeitona, Integer tempoAteLagar, Integer tempoCarga) {
@@ -41,6 +42,14 @@ public class Plantacao {
 
     public Integer getTempoCarga() {
         return tempoCarga;
+    }
+
+    public void setTravaProducao(Boolean travaProducao) {
+        this.travaProducao = travaProducao;
+    }
+
+    public Boolean getTravaProducao() {
+        return travaProducao;
     }
 
 }

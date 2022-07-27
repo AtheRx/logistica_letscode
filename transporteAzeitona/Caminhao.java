@@ -6,10 +6,12 @@ public class Caminhao extends Thread {
     private Integer capacidadeCaminhao;
     private Integer taxaCarregamento;
     private Integer siloDescarregado; // não lembro pra que essa varivavel
+    // sera que recebe o indice do silo no qual ira descarregar?
     private AtomicInteger tempoTotalTransporte = new AtomicInteger(0);
     private Long momentoEntradaFila = (long) 0;
 
-    public Caminhao(Integer capacidadeCaminhao, Integer taxaCarregamento, Lagar lagar) {
+    public Caminhao(Integer capacidadeCaminhao, Integer taxaCarregamento, Lagar lagar, Plantacao plantacao) {
+        this.plantacaoOrigem = plantacao;
         this.capacidadeCaminhao = capacidadeCaminhao;
         this.taxaCarregamento = taxaCarregamento;
         this.lagar = lagar;
@@ -80,15 +82,17 @@ public class Caminhao extends Thread {
             System.out.println("Chegou na Fila");
             lagar.adicionaCaminhaoFila(this);
             setMomentoEntradaFila(System.currentTimeMillis());
+            Thread.currentThread().wait(); // não sei se eh assim que coloca ela pra esperar o notify
             // descobrir como contar o tempo de fila (OK) e suspender a thread para liberar
-            // ela quando for sair da primeira posicao da fila. como é sync pensar no lock
-            // da outra classe
+            // ela quando for sair da primeira posicao da fila.
             // ...
             // adicionar o tempo total transporte com esse tempo encontrado (OK)
             tempoTotalTransporte.addAndGet(Math.toIntExact(System.currentTimeMillis() - getMomentoEntradaFila()));
             // travar o silo com is ocupado antes de iniciar o descarregamento. a thread no
             // silo pode ser callable pq retorna qual o silo que o caminhao deve se dirigir
-            // guardar a informacao de qual silo estou usando (uma opção)
+            // guardar a informacao de qual silo estou usando (uma opção + dificil)
+            // outra opcao: essa thread caminhao run sera responsavel por dar a liberação do
+            // silo para ele chamar outro caminhao da fila
             System.out.println("Descarregando no lagar");
             Thread.sleep(lagar.getTempoDescarga());
             // destravar o silo isOcupado false (fazer via bloqueio? pq a thread silo

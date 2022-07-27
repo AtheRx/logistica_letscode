@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -8,11 +9,13 @@ import java.util.Queue;
 //toda vez que um silo estiver desocupado, ele faz um notify na thread do caminhão que ta na 
 //primeira posicao da fila. ja que o caminhao estava em wait
 //silo pode ser uma thread? pq ela vai morrer em algum momento apos sua execução. vai ficar 
-//viva ate terminar os dois minutos de execucao
+//viva ate terminar os dois minutos de execucao e ate terminar a fila ai sim pode terminar a 
+//execucao da thread main
+
 public final class Lagar {
     private Integer tempoDescarga;
     private List<Silo> silos;
-    private Queue<Caminhao> filaEsperaLagar;
+    private Queue<Caminhao> filaEsperaLagar = new LinkedList<>();
 
     public Lagar(List<Silo> silos, Integer tempoDescarga) {
         this.silos = silos;
@@ -25,6 +28,10 @@ public final class Lagar {
 
     public Integer getTempoDescarga() {
         return tempoDescarga;
+    }
+
+    public Queue<Caminhao> getFilaEsperaLagar() {
+        return filaEsperaLagar;
     }
 
     public void adicionaCaminhaoFila(Caminhao caminhao) {
