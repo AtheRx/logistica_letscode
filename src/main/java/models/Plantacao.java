@@ -11,13 +11,13 @@ public class Plantacao implements Runnable{
     private int distanciaParaOLagarEmSegundos;
     private Lagar lagar;
 
-    private boolean produzindo;
+    private String nome;
 
-    public Plantacao(String tipoAzeitona, int distanciaParaOLagar, Lagar lagar) {
+    public Plantacao(String nome, String tipoAzeitona, int distanciaParaOLagar, Lagar lagar) {
+        this.nome = nome;
         this.tipoAzeitona = tipoAzeitona;
         this.distanciaParaOLagarEmSegundos = distanciaParaOLagar;
         this.lagar = lagar;
-        this.produzindo = true;
     }
 
     public String getTipoAzeitona() {
@@ -40,6 +40,10 @@ public class Plantacao implements Runnable{
         this.lagar = lagar;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     private void carregarCaminhao(Caminhao caminhao){
         try {
             Thread.sleep((caminhao.getCapacidadeMaximaDeTransporte() / Configuracoes.getToneladasPorSegundo() ) * 1000);
@@ -50,31 +54,24 @@ public class Plantacao implements Runnable{
 
     private void enviarCaminhao(Caminhao caminhao){
 
-        //System.out.println("Enviando caminhao " + tipoAzeitona);
-
         try {
             Thread.sleep(getDistanciaParaOLagar()*1000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        boolean largarDisponivel = lagar.receberCaminhao(caminhao);
-
-
-        
-
+        lagar.receberCaminhao(caminhao);
     }
 
-    // execução 2 minutos
+
     @Override
     public void run() {
 
         Instant inicioDaExecucao = Instant.now();
 
         new Thread(()->{
-            
-            while (Duration.between(inicioDaExecucao, Instant.now()).toMinutes() < 2){ // corrigir para 2 minutos depois
-                if (lagar.isEstaDisponivel()){
-                    Caminhao caminhao = FabricaDeCaminhoes.criarCaminhao();
+            while (Duration.between(inicioDaExecucao, Instant.now()).toMinutes() < 2){
+                if (lagar.isDisponivel()){
+                    Caminhao caminhao = FabricaDeCaminhoes.criarCaminhao(this);
                     carregarCaminhao(caminhao);
                     enviarCaminhao(caminhao);
                 }
