@@ -106,6 +106,14 @@ public class Lagar implements Runnable {
         }, "atualizacaoDePlantacoes").start();
     }
 
+    public void atualizarRelacaoDePlantacoes(Plantacao plantacao){
+        new Thread(() -> {
+            if(!relacaoDePlantacoes.contains(plantacao)) {
+                relacaoDePlantacoes.add(plantacao);
+            }
+        }, "atualizacaoDePlantacoes").start();
+    }
+
     public void verificarestadoDasPlantacoes(){
         if (relacaoDePlantacoes.size() > 0){
             plantacoesProduzindo = relacaoDePlantacoes.stream()
