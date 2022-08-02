@@ -6,25 +6,21 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Lagar implements Runnable {
 
-    private int amazenamento;
+    private int quantidadeDeAzeitonasArmazenadasEmToneladas;
     private int capacidadeMinimaDaFila;
     private int capacidadeMaximaDaFila;
     private int capacidadeDeRecepcaoSimultanea;
     private boolean estaDisponivel = true;
-    private Queue<Caminhao> filaDeCaminhao = new LinkedList<>();
-    //private ConcurrentLinkedQueue<Caminhao> filaDeCaminhao = new ConcurrentLinkedQueue<>();
-    //private BlockingQueue<Caminhao>  filaDeCaminhao = new ArrayBlockingQueue<>();
+    private ConcurrentLinkedQueue<Caminhao> filaDeCaminhao = new ConcurrentLinkedQueue<>();
 
     private boolean controle = true;
 
     public Lagar(int capacidadeMinimaDaFila, int capacidadeMaximaDaFila, int capacidadeDeRecepcaoSimultanea) {
-        this.amazenamento = 0;
+        this.quantidadeDeAzeitonasArmazenadasEmToneladas = 0;
         this.capacidadeMaximaDaFila = capacidadeMaximaDaFila;
         this.capacidadeMinimaDaFila = capacidadeMinimaDaFila;
         this.capacidadeDeRecepcaoSimultanea = capacidadeDeRecepcaoSimultanea;
@@ -48,40 +44,48 @@ public class Lagar implements Runnable {
         }
     }
 
+    public void descarregarCaminhao(String areaDeDescarregamento) {
+        if (filaDeCaminhao.size() > 0){
+            try{
+                Caminhao caminhao = filaDeCaminhao.remove();
+                Thread.sleep((caminhao.getCapacidadeMaximaDeTransporte() / Configuracoes.getToneladasPorSegundo()) * 1000);
+                quantidadeDeAzeitonasArmazenadasEmToneladas += caminhao.getCapacidadeMaximaDeTransporte();
+                registrarTrabalhoRealizado(caminhao, areaDeDescarregamento);
+            } catch (InterruptedException e){
+                throw new RuntimeException();
+            }
+        }
+
+        if (filaDeCaminhao.size() <= 4) {
+            estaDisponivel = true;
+        }
+    }
+
+    public void registrarTrabalhoRealizado(Caminhao caminhao, String areaDeDescarregamento){
+        LocalTime hora = LocalTime.now();
+        var formatador = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        System.out.println(hora.format(formatador) + " "
+                + String.format("%4s", quantidadeDeAzeitonasArmazenadasEmToneladas +"").replace(" ", "0")  + " >> "
+                + caminhao.getCapacidadeMaximaDeTransporte() + " toneladas de " + caminhao.getPlantacao().getTipoAzeitona()
+                + " na " + areaDeDescarregamento
+                + " de origem da " + caminhao.getPlantacao().getNome()
+                + " com tempo total de " + Duration.between(caminhao.getMomentoCriacao(), Instant.now()).toSeconds() + " segundos");
+    }
+
     @Override
     public void run() {
 
         controle = false;
 
-        new Thread(() -> {
+        for (int i = 1; i <= capacidadeDeRecepcaoSimultanea; i++){
+            String areaDeDescarregamento = String.format("recepcao %s", i);
+            new Thread(() -> {
 
-            while (filaDeCaminhao.size() > 0) {
-
-                if (filaDeCaminhao.size() <= 4) {
-                    estaDisponivel = true;
+                while (filaDeCaminhao.size() > 0) {
+                    descarregarCaminhao(areaDeDescarregamento);
                 }
-
-                Caminhao caminhao = filaDeCaminhao.remove();
-
-                try {
-                    Thread.sleep((caminhao.getCapacidadeMaximaDeTransporte() / Configuracoes.getToneladasPorSegundo()) * 1000);
-                    amazenamento+= caminhao.getCapacidadeMaximaDeTransporte();
-                    LocalTime hora = LocalTime.now();
-                    var formatador = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-                    System.out.println(hora.format(formatador) + " "
-                            + String.format("%4s", amazenamento+"").replace(" ", "0")  + " >> "
-                            + caminhao.getCapacidadeMaximaDeTransporte() + " toneladas de " + caminhao.getPlantacao().getTipoAzeitona()
-                            + " na recepcao x"
-                            + " de origem da " + caminhao.getPlantacao().getNome()
-                            + " com tempo total de " + Duration.between(caminhao.getMomentoCriacao(), Instant.now()).toSeconds() + " segundos");
-                    //System.out.println("Na fila: " + filaDeCaminhao.size());
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, "Lagar").start();
+            }, areaDeDescarregamento).start();
+        }
     }
 }
