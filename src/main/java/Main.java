@@ -13,13 +13,15 @@ public class Main {
         Plantacao plantacao2 = new Plantacao("Plantacao 2","Galega", 4, lagar);
         Plantacao plantacao3 = new Plantacao("Plantacao 3","Cordovil", 3, lagar);
         Plantacao plantacao4 = new Plantacao("Plantacao 4","Cordovil", 3, lagar);
-        Plantacao plantacao5 = new Plantacao("Plantacao 5","Purcil", 2, lagar);
+        Plantacao plantacao5 = new Plantacao("Plantacao 5","Cordovil", 3, lagar);
 
         plantacao1.run();
         plantacao2.run();
         plantacao3.run();
         plantacao4.run();
         plantacao5.run();
+
+        lagar.run();
 
     }
 }

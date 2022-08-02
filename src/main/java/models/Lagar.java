@@ -4,9 +4,12 @@ import configuracoes.Configuracoes;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class Lagar implements Runnable {
 
@@ -14,10 +17,11 @@ public class Lagar implements Runnable {
     private int capacidadeMinimaDaFila;
     private int capacidadeMaximaDaFila;
     private int capacidadeDeRecepcaoSimultanea;
-    private boolean estaDisponivel = true;
-    private ConcurrentLinkedQueue<Caminhao> filaDeCaminhao = new ConcurrentLinkedQueue<>();
+    private boolean estaDisponivel;
+    private boolean plantacoesProduzindo;
 
-    private boolean controle = true;
+    private CopyOnWriteArraySet<Plantacao> relacaoDePlantacoes = new CopyOnWriteArraySet<>();
+    private ConcurrentLinkedQueue<Caminhao> filaDeCaminhao = new ConcurrentLinkedQueue<>();
 
     private Relatorio relatorio; 
 
@@ -27,8 +31,8 @@ public class Lagar implements Runnable {
         this.capacidadeMinimaDaFila = capacidadeMinimaDaFila;
         this.capacidadeDeRecepcaoSimultanea = capacidadeDeRecepcaoSimultanea;
         this.estaDisponivel = true;
-
         this.relatorio = new Relatorio("relatorio-1991.txt");
+        this.plantacoesProduzindo = true;
     }
 
     public boolean isDisponivel() {
@@ -37,19 +41,16 @@ public class Lagar implements Runnable {
 
     public synchronized void receberCaminhao(Caminhao caminhao) {
 
-        if (filaDeCaminhao.size() >= 3 && controle) {
-            this.run();
-        }
+        filaDeCaminhao.add(caminhao);
+        atualizarRelacaoDePlantacoes(caminhao.getPlantacao());
 
         if (filaDeCaminhao.size() >= capacidadeMaximaDaFila) {
             estaDisponivel = false;
-        } else {
-            filaDeCaminhao.add(caminhao);
         }
     }
 
     public void descarregarCaminhao(String areaDeDescarregamento) {
-        if (filaDeCaminhao.size() > 0){
+        if (!filaDeCaminhao.isEmpty()){
             try{
                 Caminhao caminhao = filaDeCaminhao.remove();
                 Thread.sleep((caminhao.getCapacidadeMaximaDeTransporte() / Configuracoes.getToneladasPorSegundo()) * 1000);
@@ -57,6 +58,8 @@ public class Lagar implements Runnable {
                 registrarTrabalhoRealizado(caminhao, areaDeDescarregamento);
             } catch (InterruptedException e){
                 throw new RuntimeException();
+            } catch (NoSuchElementException e){
+                pausarOperacao(1000);
             }
         }
 
@@ -68,13 +71,12 @@ public class Lagar implements Runnable {
     public void registrarTrabalhoRealizado(Caminhao caminhao, String areaDeDescarregamento){
         LocalTime hora = LocalTime.now();
         var formatador = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        String registro = hora.format(formatador) + " "
+        System.out.println(hora.format(formatador) + " "
                 + String.format("%4s", quantidadeDeAzeitonasArmazenadasEmToneladas +"").replace(" ", "0")  + " >> "
                 + caminhao.getCapacidadeMaximaDeTransporte() + " toneladas de " + caminhao.getPlantacao().getTipoAzeitona()
                 + " na " + areaDeDescarregamento
                 + " de origem da " + caminhao.getPlantacao().getNome()
-                + " com tempo total de " + Duration.between(caminhao.getMomentoCriacao(), Instant.now()).toSeconds() + " segundos" + System.lineSeparator();
+                + " com tempo total de " + Duration.between(caminhao.getMomentoCriacao(), Instant.now()).toSeconds() + " segundos" + System.lineSeparator());
 
         synchronized(this.relatorio){
             System.out.print(registro);
@@ -96,20 +98,49 @@ public class Lagar implements Runnable {
         return this.relatorio;
     }
 
+    public void atualizarRelacaoDePlantacoes(Plantacao plantacao){
+        new Thread(() -> {
+            if(!relacaoDePlantacoes.contains(plantacao)) {
+                relacaoDePlantacoes.add(plantacao);
+            }
+        }, "atualizacaoDePlantacoes").start();
+    }
+
+    public void verificarestadoDasPlantacoes(){
+        if (relacaoDePlantacoes.size() > 0){
+            plantacoesProduzindo = relacaoDePlantacoes.stream()
+                    .allMatch((plantacao) -> plantacao.isEmProducao() == true);
+        }
+
+        pausarOperacao(1000);
+
+    }
+    public void pausarOperacao(int tempoDeProcessamentoEmMilissegundos){
+        try{
+            Thread.sleep(tempoDeProcessamentoEmMilissegundos);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public void run() {
-
-        controle = false;
 
         for (int i = 1; i <= capacidadeDeRecepcaoSimultanea; i++){
             String areaDeDescarregamento = String.format("recepcao %s", i);
             new Thread(() -> {
-
-                while (filaDeCaminhao.size() > 0) {
-                    descarregarCaminhao(areaDeDescarregamento);
+                while (plantacoesProduzindo || !filaDeCaminhao.isEmpty()) {
+                   descarregarCaminhao(areaDeDescarregamento);
                 }
             }, areaDeDescarregamento).start();
         }
-        //relatorio.fecharRegistro();
+
+        new Thread(() -> {
+            while(plantacoesProduzindo || !filaDeCaminhao.isEmpty()) {
+                if (filaDeCaminhao.isEmpty()) {
+                    verificarestadoDasPlantacoes();
+                }
+            }
+        }, "VerificadorDePlantacao").start();
+
     }
 }
