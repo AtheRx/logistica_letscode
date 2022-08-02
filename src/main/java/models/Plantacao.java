@@ -76,6 +76,7 @@ public class Plantacao implements Runnable{
                     enviarCaminhao(caminhao);
                 }
             }
+                        
         }, this.tipoAzeitona).start();
 
     }

@@ -1,11 +1,12 @@
 import configuracoes.Configuracoes;
 import models.Lagar;
 import models.Plantacao;
+import models.Relatorio;
 
 public class Main {
     public static void main(String[] args) {
         Configuracoes.carregar();
-
+        
         Lagar lagar = new Lagar(4,12,3);
 
         Plantacao plantacao1 = new Plantacao("Plantacao 1","Galega", 4, lagar);

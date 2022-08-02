@@ -19,12 +19,16 @@ public class Lagar implements Runnable {
 
     private boolean controle = true;
 
+    private Relatorio relatorio; 
+
     public Lagar(int capacidadeMinimaDaFila, int capacidadeMaximaDaFila, int capacidadeDeRecepcaoSimultanea) {
         this.quantidadeDeAzeitonasArmazenadasEmToneladas = 0;
         this.capacidadeMaximaDaFila = capacidadeMaximaDaFila;
         this.capacidadeMinimaDaFila = capacidadeMinimaDaFila;
         this.capacidadeDeRecepcaoSimultanea = capacidadeDeRecepcaoSimultanea;
         this.estaDisponivel = true;
+
+        this.relatorio = new Relatorio("relatorio-1991.txt");
     }
 
     public boolean isDisponivel() {
@@ -65,12 +69,31 @@ public class Lagar implements Runnable {
         LocalTime hora = LocalTime.now();
         var formatador = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        System.out.println(hora.format(formatador) + " "
+        String registro = hora.format(formatador) + " "
                 + String.format("%4s", quantidadeDeAzeitonasArmazenadasEmToneladas +"").replace(" ", "0")  + " >> "
                 + caminhao.getCapacidadeMaximaDeTransporte() + " toneladas de " + caminhao.getPlantacao().getTipoAzeitona()
                 + " na " + areaDeDescarregamento
                 + " de origem da " + caminhao.getPlantacao().getNome()
-                + " com tempo total de " + Duration.between(caminhao.getMomentoCriacao(), Instant.now()).toSeconds() + " segundos");
+                + " com tempo total de " + Duration.between(caminhao.getMomentoCriacao(), Instant.now()).toSeconds() + " segundos" + System.lineSeparator();
+
+        synchronized(this.relatorio){
+            System.out.print(registro);
+            this.relatorio.imprime(registro);
+
+            try {
+                if(Thread.activeCount() <= 2){
+                    this.relatorio.fecharRegistro();
+                }
+            } catch (IllegalStateException e) {
+                //TODO: handle exception
+            }
+
+        }
+        
+    }
+
+    public Relatorio getRelatorio(){
+        return this.relatorio;
     }
 
     @Override
@@ -87,5 +110,6 @@ public class Lagar implements Runnable {
                 }
             }, areaDeDescarregamento).start();
         }
+        //relatorio.fecharRegistro();
     }
 }
