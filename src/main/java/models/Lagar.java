@@ -6,6 +6,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Lagar implements Runnable {
@@ -15,7 +17,8 @@ public class Lagar implements Runnable {
     private int capacidadeMaximaDaFila;
     private int capacidadeDeRecepcaoSimultanea;
     private boolean estaDisponivel = true;
-    private ConcurrentLinkedQueue<Caminhao> filaDeCaminhao = new ConcurrentLinkedQueue<>();
+    private Queue<Caminhao> filaDeCaminhao = new LinkedList<>();
+    //private ConcurrentLinkedQueue<Caminhao> filaDeCaminhao = new ConcurrentLinkedQueue<>();
     //private BlockingQueue<Caminhao>  filaDeCaminhao = new ArrayBlockingQueue<>();
 
     private boolean controle = true;
@@ -48,7 +51,6 @@ public class Lagar implements Runnable {
     @Override
     public void run() {
 
-        Instant inicioDaExecucao = Instant.now();
         controle = false;
 
         new Thread(() -> {
