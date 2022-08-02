@@ -1,0 +1,5 @@
+13:35:16 - 04 >> 4 toneladas de Cordovil com o tempo total de 3 segundos
+13:35:15 - 09 >> 5 toneladas de Galega com o tempo total de 4 segundos
+13:35:14 - 015 >> 6 toneladas de Picual com o tempo total de 2 segundos
+13:35:13 - 028 >> 13 toneladas de Galega com o tempo total de 4 segundos
+13:35:12 - 044 >> 16 toneladas de Cordovil com o tempo total de 3 segundos
