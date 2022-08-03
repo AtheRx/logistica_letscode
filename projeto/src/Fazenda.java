@@ -15,7 +15,7 @@ public class Fazenda {
     public List<Plantacao> getListaPlantacoes() {
         return listaplantacoes;
     }
-    
+
     public boolean isAtiva() {
         return ativa;
     }
@@ -24,32 +24,32 @@ public class Fazenda {
         this.ativa = ativa;
     }
 
-    public void criarPlantacao(){
-        for (Map.Entry<String, Integer> item :leitor.getVariedadeEQtd().entrySet()) {
+    public void criarPlantacao() {
+        for (Map.Entry<String, Integer> item : leitor.getVariedadeEQtd().entrySet()) {
             adicionarPlantacao(item.getKey(), item.getValue());
-            adicionarDistancia();  
-        } 
+            adicionarDistancia();
+        }
 
     }
 
-    public void adicionarPlantacao(String tipoPlantacao, int quantidade){
-        for(int i = 0; i < quantidade; i++){
+    public void adicionarPlantacao(String tipoPlantacao, int quantidade) {
+        for (int i = 0; i < quantidade; i++) {
             Plantacao plantacao = new Plantacao(leitor);
             plantacao.setTipoPlantacao(tipoPlantacao);
             listaplantacoes.add(plantacao);
 
         }
-        
+
     }
 
-    public void adicionarDistancia(){
+    public void adicionarDistancia() {
         for (Plantacao plantacao : listaplantacoes) {
-            for (Map.Entry<String, Integer> item :leitor.getVariedadeEDist().entrySet()) {
-                 if(plantacao.getTipoPlantacao().equals(item.getKey())){
+            for (Map.Entry<String, Integer> item : leitor.getVariedadeEDist().entrySet()) {
+                if (plantacao.getTipoPlantacao().equals(item.getKey())) {
                     plantacao.setDistanciaDoLagar(item.getValue());
-                 }
-            } 
-            
+                }
+            }
+
         }
     }
 

@@ -8,7 +8,6 @@ public class App {
         Plantacao plantacao02 = new Plantacao(4, 2);
 
 
-
         //Objetivo.
         //Duas plantações executando ao mesmo tempo
         //Sugestão 1:
@@ -21,10 +20,6 @@ public class App {
         System.out.println("Thread main");
 
 
-
-
-        
-        
     }
 
 }

@@ -1,10 +1,10 @@
-public class Caminhao{
+public class Caminhao {
     private String id;
     private int capacidadeEmT;
     private int fatorMultDaCarga;
     private double fatorMultDaDescarga;
 
-    public Caminhao(int capacidadeEmT, int fatorMultDaCarga, String id){
+    public Caminhao(int capacidadeEmT, int fatorMultDaCarga, String id) {
         this.id = id;
         this.capacidadeEmT = capacidadeEmT;
         this.fatorMultDaCarga = fatorMultDaCarga;

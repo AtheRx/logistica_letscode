@@ -1,4 +1,3 @@
-
 public class Silo extends Thread {
     private String nomeSilo;
     private Boolean isOcupado;

@@ -10,7 +10,8 @@ public class Configuracoes {
     private static long toneladasPorSegundo;
     private static List<String> tiposAzeitona = new ArrayList<>();
 
-    private Configuracoes(){}
+    private Configuracoes() {
+    }
 
     public static LocalDate getDataAtual() {
         return dataAtual;

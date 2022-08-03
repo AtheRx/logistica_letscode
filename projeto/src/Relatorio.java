@@ -18,13 +18,13 @@ public class Relatorio {
         try {
             FileWriter fileWriter = new FileWriter("relatorio-1991.txt", true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.printf("%s - 0%d >> %d toneladas de %s com o tempo total de %d segundos\n",hora, toneladasAcumulada, caminhao.getCarga(), caminhao.getTipoCarga(), caminhao.getContador()/1000);
+            printWriter.printf("%s - 0%d >> %d toneladas de %s com o tempo total de %d segundos\n", hora, toneladasAcumulada, caminhao.getCarga(), caminhao.getTipoCarga(), caminhao.getContador() / 1000);
             printWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        System.out.printf("%s - 0%d >> %d toneladas de %s com o tempo total de %d segundos\n",hora, toneladasAcumulada, caminhao.getCarga(), caminhao.getTipoCarga(), caminhao.getContador()/1000);
+
+        System.out.printf("%s - 0%d >> %d toneladas de %s com o tempo total de %d segundos\n", hora, toneladasAcumulada, caminhao.getCarga(), caminhao.getTipoCarga(), caminhao.getContador() / 1000);
     }
-    
+
 }

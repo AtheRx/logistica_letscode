@@ -1,6 +1,6 @@
-public class TarefaDescarrega implements Runnable{
+public class TarefaDescarrega implements Runnable {
     private Caminhao caminhao;
-    
+
 
     public TarefaDescarrega(Caminhao caminhao) {
         this.caminhao = caminhao;
@@ -14,7 +14,7 @@ public class TarefaDescarrega implements Runnable{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
-    
+
 }

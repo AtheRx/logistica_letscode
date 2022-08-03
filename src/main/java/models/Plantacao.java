@@ -64,7 +64,7 @@ public class Plantacao implements Runnable {
         Instant inicioDaExecucao = Instant.now();
 
         new Thread(() -> {
-            while (Duration.between(inicioDaExecucao, Instant.now()).toSeconds() < 30) {
+            while (Duration.between(inicioDaExecucao, Instant.now()).toMinutes() < 2) {
                 if (lagar.isDisponivel()) {
                     Caminhao caminhao = FabricaDeCaminhoes.criarCaminhao(this);
                     carregarCaminhao(caminhao);

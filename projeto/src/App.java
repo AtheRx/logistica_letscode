@@ -5,7 +5,7 @@ public class App {
         fazenda.criarPlantacao();
         Plantacao plantacao = new Plantacao(leitor);
         plantacao.iniciar(fazenda);
-      
+
     }
 }
 
