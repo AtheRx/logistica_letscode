@@ -7,19 +7,31 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class Plantacao implements Runnable {
+    private String nome;
     private String tipoAzeitona;
     private int distanciaParaOLagarEmSegundos;
     private Lagar lagar;
 
-    private String nome;
     private boolean emProducao;
 
-    public Plantacao(String nome, String tipoAzeitona, int distanciaParaOLagar, Lagar lagar) {
-        this.nome = nome;
-        this.tipoAzeitona = tipoAzeitona;
-        this.distanciaParaOLagarEmSegundos = distanciaParaOLagar;
+    private Plantacao(PlatancaoBuilder builder) {
+        this.nome = builder.nome;
+        this.tipoAzeitona = builder.tipoAzeitona;
+        this.distanciaParaOLagarEmSegundos = builder.distanciaParaOLagarEmSegundos;
+        this.lagar = builder.lagar;
+        this.emProducao = builder.emProducao;
+    }
+
+    public int getDistanciaParaOLagarEmSegundos() {
+        return distanciaParaOLagarEmSegundos;
+    }
+
+    public Lagar getLagar() {
+        return lagar;
+    }
+
+    public void setLagar(Lagar lagar) {
         this.lagar = lagar;
-        this.emProducao = true;
     }
 
     public boolean isEmProducao() {
@@ -74,6 +86,54 @@ public class Plantacao implements Runnable {
             this.emProducao = false;
 
         }, this.tipoAzeitona).start();
+
+    }
+
+    public void setDistanciaParaOLagar(Integer distanciaParaOLagarEmSegundos) {
+        this.distanciaParaOLagarEmSegundos = distanciaParaOLagarEmSegundos;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public static class PlatancaoBuilder{
+        private String tipoAzeitona;
+        private int distanciaParaOLagarEmSegundos;
+        private Lagar lagar;
+        private String nome;
+        private boolean emProducao;
+
+        public PlatancaoBuilder(){
+
+        }
+
+        public PlatancaoBuilder tipoAzeitona(String tipoAzeitona){
+            this.tipoAzeitona = tipoAzeitona;
+            return this;
+        }
+
+        public PlatancaoBuilder distanciaParaOLagarEmSegundos(int distanciaParaOLagarEmSegundos){
+            this.distanciaParaOLagarEmSegundos = distanciaParaOLagarEmSegundos;
+            return this;
+        }
+        public PlatancaoBuilder lagar(Lagar lagar){
+            this.lagar = lagar;
+            return this;
+        }
+        public PlatancaoBuilder nome(String nome){
+            this.nome = nome;
+            return this;
+        }
+        public PlatancaoBuilder emProducao(boolean emProducao){
+            this.emProducao = emProducao;
+            return this;
+        }
+
+        public Plantacao build(){
+            Plantacao plantacao = new Plantacao(this);
+            return plantacao;
+        }
 
     }
 }
