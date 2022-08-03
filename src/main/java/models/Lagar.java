@@ -71,7 +71,7 @@ public class Lagar implements Runnable {
         LocalTime hora = LocalTime.now();
         var formatador = DateTimeFormatter.ofPattern("HH:mm:ss");
         String registro = hora.format(formatador) + " "
-                + String.format("%4s", quantidadeDeAzeitonasArmazenadasEmToneladas +"").replace(" ", "0")  + " >> "
+                + String.format("%4s", quantidadeDeAzeitonasArmazenadasEmToneladas + "").replace(" ", "0") + " >> "
                 + caminhao.getCapacidadeMaximaDeTransporte() + " toneladas de " + caminhao.getPlantacao().getTipoAzeitona()
                 + " na " + areaDeDescarregamento
                 + " de origem da " + caminhao.getPlantacao().getNome()
