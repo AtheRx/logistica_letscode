@@ -1,11 +1,11 @@
 public class Silo extends Thread {
-private int tempoDescarga;
-private boolean isOcupado;
+    private int tempoDescarga;
+    private boolean isOcupado;
 
-@Override
-public void run() {
-    System.out.println("Descarregando");
-}
+    @Override
+    public void run() {
+        System.out.println("Descarregando");
+    }
 
 
 // ::run

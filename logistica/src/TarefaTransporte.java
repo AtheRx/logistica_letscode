@@ -1,8 +1,8 @@
-public class TarefaTransporte implements Runnable{
+public class TarefaTransporte implements Runnable {
     private long distanciaAoLagar;
     private Caminhao caminhao;
     private Lagar lagar;
-    
+
 
     public TarefaTransporte(Caminhao caminhao, Lagar lagar, long distanciaAoLagar) {
         this.caminhao = caminhao;
@@ -18,7 +18,7 @@ public class TarefaTransporte implements Runnable{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
-    
+
 }

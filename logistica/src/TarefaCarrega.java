@@ -5,7 +5,7 @@ public class TarefaCarrega implements Runnable {
     private Caminhao caminhao;
     private Plantacao plantacao;
     private Lagar lagar;
-    
+
     private ExecutorService transportesPoll = Executors.newCachedThreadPool();
 
     public TarefaCarrega(Caminhao caminhao, Plantacao plantacao, Lagar lagar) {
@@ -20,11 +20,11 @@ public class TarefaCarrega implements Runnable {
         try {
             Thread.sleep(this.caminhao.getTempoCarregamentoMili());
             transportesPoll.execute(new TarefaTransporte(caminhao, lagar, plantacao.getDistanciaAoLagar()));
-            
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
-    
+
 }

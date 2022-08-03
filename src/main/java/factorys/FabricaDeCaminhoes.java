@@ -6,7 +6,7 @@ import models.Plantacao;
 import java.util.Random;
 
 public class FabricaDeCaminhoes {
-    public static Caminhao criarCaminhao(Plantacao plantacao){
+    public static Caminhao criarCaminhao(Plantacao plantacao) {
 
         Random random = new Random();
 

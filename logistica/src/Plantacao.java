@@ -1,11 +1,11 @@
-public class Plantacao{
+public class Plantacao {
     private boolean isOcupado;
     private long distanciaEmS;
     private long tempoDeCarga;
 
     private Caminhao caminhao;
-    
-    public Plantacao(int distanciaEmS, long tempoCarga ){
+
+    public Plantacao(int distanciaEmS, long tempoCarga) {
         this.distanciaEmS = distanciaEmS;
         this.tempoDeCarga = tempoCarga;
     }
@@ -13,9 +13,10 @@ public class Plantacao{
     public long getTempoCarga() {
         return tempoDeCarga;
     }
-    public void carregaCaminhao(Caminhao caminhao){
+
+    public void carregaCaminhao(Caminhao caminhao) {
         this.caminhao = caminhao;
-        if( this.isOcupado){
+        if (this.isOcupado) {
             throw new RuntimeException("Ocupado");
         }
 
@@ -26,28 +27,25 @@ public class Plantacao{
                 String threadName = Thread.currentThread().getName();
                 try {
                     System.out.println(threadName + " Carregando...");
-                    Thread.sleep(tempoDeCarga*1000);
+                    Thread.sleep(tempoDeCarga * 1000);
                     System.out.println(threadName + " Carregado!");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                
+
             }
-            
+
         }.start();
-        
-        
+
+
     }
 
 
-
-
-    
     // ::run
     //     if !isOcupado
     //     :: carrega(Caminhao)
     //         >isOcupado = true
     //         >sleep(caminhao.fatorMultDaCarga )
     //         >tempoCarga
-          
+
 }
