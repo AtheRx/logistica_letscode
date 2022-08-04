@@ -39,8 +39,6 @@ public class FabricaDePlantacoes {
 
             listaplantacoes.add(plantacao);
         }
-
-
     }
 
     public void adicionarDistancia() {

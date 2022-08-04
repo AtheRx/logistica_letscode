@@ -8,8 +8,6 @@ public class Main {
     public static void main(String[] args) {
         Configuracoes.carregar();
 
-        System.out.println(Configuracoes.getCapacidadeDeRecepcaoSimultanea());
-
         Lagar lagar = new Lagar.LagarBuild()
                 .capacidadeMinimaDaFila(Configuracoes.getCapacidadeMinimaDaFila())
                 .capacidadeMaximaDaFila(Configuracoes.getCapacidadeMaximaDaFila())
