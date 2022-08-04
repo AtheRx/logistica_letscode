@@ -14,7 +14,7 @@ public class Main {
                 .capacidadeMinimaDaFila(Configuracoes.getCapacidadeMinimaDaFila())
                 .capacidadeMaximaDaFila(Configuracoes.getCapacidadeMaximaDaFila())
                 .capacidadeDeRecepcaoSimultanea(Configuracoes.getCapacidadeDeRecepcaoSimultanea())
-                .relatorio(new Relatorio("relatorio-1991.txt")) // Corrigir para colocar o ano que vem do arquivo de regras no titulo do relatorio
+                .relatorio(new Relatorio(Configuracoes.nomeRelatorio())) // Corrigir para colocar o ano que vem do arquivo de regras no titulo do relatorio
                 .build();
 
 
