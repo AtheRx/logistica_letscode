@@ -185,4 +185,11 @@ public class Configuracoes {
         }
         return listaLinhas;
     }
+    
+    public static String nomeRelatorio() {
+        String nome;
+        String data = getData().substring(6, 10);
+        nome = "relatorio-" + data + ".txt";
+        return nome;
+    }
 }
