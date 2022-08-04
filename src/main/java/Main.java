@@ -16,7 +16,7 @@ public class Main {
                 .capacidadeMinimaDaFila(Configuracoes.getCapacidadeMinimaDaFila())
                 .capacidadeMaximaDaFila(Configuracoes.getCapacidadeMaximaDaFila())
                 .capacidadeDeRecepcaoSimultanea(Configuracoes.getCapacidadeDeRecepcaoSimultanea())
-                .relatorio(relatorio) // Corrigir para colocar o ano que vem do arquivo de regras no titulo do relatorio
+                .relatorio(relatorio) 
                 .build();
 
 
