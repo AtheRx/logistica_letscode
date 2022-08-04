@@ -10,8 +10,6 @@ public class Main {
         Relatorio relatorio = new Relatorio(Configuracoes.nomeRelatorio());
         Configuracoes.carregar();
 
-        System.out.println(Configuracoes.getCapacidadeDeRecepcaoSimultanea());
-
         Lagar lagar = new Lagar.LagarBuild()
                 .capacidadeMinimaDaFila(Configuracoes.getCapacidadeMinimaDaFila())
                 .capacidadeMaximaDaFila(Configuracoes.getCapacidadeMaximaDaFila())
