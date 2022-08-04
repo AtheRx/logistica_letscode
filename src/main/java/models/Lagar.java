@@ -139,7 +139,6 @@ public class Lagar implements Runnable {
                 while (plantacoesProduzindo || !filaDeCaminhao.isEmpty()) {
                     descarregarCaminhao(areaDeDescarregamento);
                 }
-                System.out.println("No fim:  " + filaDeCaminhao.size());
             }, areaDeDescarregamento).start();
 
         }
