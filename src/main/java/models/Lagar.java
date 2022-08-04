@@ -44,12 +44,17 @@ public class Lagar implements Runnable {
 
     public synchronized void receberCaminhao(Caminhao caminhao) {
 
-        filaDeCaminhao.add(caminhao);
-        atualizarRelacaoDePlantacoes(caminhao.getPlantacao());
+        if(estaDisponivel){
+            filaDeCaminhao.add(caminhao);
+            atualizarRelacaoDePlantacoes(caminhao.getPlantacao());
+        }
 
         if (filaDeCaminhao.size() >= capacidadeMaximaDaFila) {
             estaDisponivel = false;
+        } else if (filaDeCaminhao.size() <= capacidadeMinimaDaFila) {
+            estaDisponivel = true;
         }
+
     }
 
     private void pausarOperacao(int tempoDeProcessamentoEmMilissegundos) {
@@ -120,7 +125,7 @@ public class Lagar implements Runnable {
     private void verificarestadoDasPlantacoes() {
         if (relacaoDePlantacoes.size() > 0) {
             plantacoesProduzindo = relacaoDePlantacoes.stream()
-                    .allMatch((plantacao) -> plantacao.isEmProducao() == true);
+                    .anyMatch((plantacao) -> plantacao.isEmProducao());
         }
         pausarOperacao(1000);
     }
@@ -134,8 +139,12 @@ public class Lagar implements Runnable {
                 while (plantacoesProduzindo || !filaDeCaminhao.isEmpty()) {
                     descarregarCaminhao(areaDeDescarregamento);
                 }
+                System.out.println("No fim:  " + filaDeCaminhao.size());
             }, areaDeDescarregamento).start();
+
         }
+
+
 
         new Thread(() -> {
             while (plantacoesProduzindo || !filaDeCaminhao.isEmpty()) {

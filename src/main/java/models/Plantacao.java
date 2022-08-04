@@ -60,7 +60,6 @@ public class Plantacao implements Runnable {
     }
 
     private void enviarCaminhao(Caminhao caminhao) {
-
         try {
             Thread.sleep(getDistanciaParaOLagar() * 1000);
         } catch (InterruptedException e) {
@@ -74,6 +73,8 @@ public class Plantacao implements Runnable {
     public void run() {
 
         Instant inicioDaExecucao = Instant.now();
+
+        emProducao = true;
 
         new Thread(() -> {
             while (Duration.between(inicioDaExecucao, Instant.now()).toMinutes() < 2) {
@@ -123,10 +124,6 @@ public class Plantacao implements Runnable {
         }
         public PlatancaoBuilder nome(String nome){
             this.nome = nome;
-            return this;
-        }
-        public PlatancaoBuilder emProducao(boolean emProducao){
-            this.emProducao = emProducao;
             return this;
         }
 
