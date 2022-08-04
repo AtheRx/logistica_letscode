@@ -89,13 +89,13 @@ public class Lagar implements Runnable {
         System.out.print(registro);
         this.relatorio.imprime(registro);
 
-        try {
-            if (Thread.activeCount() <= 2) {
-                this.relatorio.fecharRegistro();
-            }
-        } catch (IllegalStateException e) {
-            //TODO: handle exception
-        }
+        // try {
+        //     if (Thread.activeCount() <= 2) {
+        //         this.relatorio.fecharRegistro();
+        //     }
+        // } catch (IllegalStateException e) {
+        //     //TODO: handle exception
+        // }
     }
 
     public void descarregarCaminhao(String areaDeDescarregamento) {

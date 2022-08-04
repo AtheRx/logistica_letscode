@@ -11,7 +11,7 @@ public class Relatorio {
 
     public Relatorio(String pathDeSaida) {
         try {
-            this.fileWriter = new FileWriter(pathDeSaida, true);
+            this.fileWriter = new FileWriter(pathDeSaida);
             this.printWriter = new PrintWriter(this.fileWriter);
             System.out.println("Registro aberto.");
         } catch (IOException e) {
