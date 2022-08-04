@@ -6,6 +6,8 @@ import models.Relatorio;
 
 public class Main {
     public static void main(String[] args) {
+        boolean keepRunning = true;
+        Relatorio relatorio = new Relatorio(Configuracoes.nomeRelatorio());
         Configuracoes.carregar();
 
         System.out.println(Configuracoes.getCapacidadeDeRecepcaoSimultanea());
@@ -14,7 +16,7 @@ public class Main {
                 .capacidadeMinimaDaFila(Configuracoes.getCapacidadeMinimaDaFila())
                 .capacidadeMaximaDaFila(Configuracoes.getCapacidadeMaximaDaFila())
                 .capacidadeDeRecepcaoSimultanea(Configuracoes.getCapacidadeDeRecepcaoSimultanea())
-                .relatorio(new Relatorio(Configuracoes.nomeRelatorio())) // Corrigir para colocar o ano que vem do arquivo de regras no titulo do relatorio
+                .relatorio(relatorio) // Corrigir para colocar o ano que vem do arquivo de regras no titulo do relatorio
                 .build();
 
 
@@ -26,6 +28,19 @@ public class Main {
         }
 
         lagar.run();
+        while(keepRunning){
+
+            try {
+                if (Thread.activeCount() <= 1) {
+                    relatorio.fecharRegistro();
+                    keepRunning = false;
+
+                }
+            } catch (Exception e) {
+                
+                System.out.printf("O Arquivo já foi fechado.%n" + e.getStackTrace());
+            } 
+        }
 
     }
 }
