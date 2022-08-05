@@ -28,22 +28,14 @@ public class Main {
 
         lagar.run();
 
-//        Thread threadControla = new Thread(new ControlaFechamentoRelatorio(relatorio));
-//        threadControla.setDaemon(true);
-//        try{
-//            threadControla.start();
-//        }finally{
-//            //System.out.println("Teste");
-//        }
 
         while(keepRunning) {
 
-            //System.out.println(Thread.currentThread());
             try {
-                //System.out.println(Thread.activeCount());
+               
 
                 if (Thread.activeCount() <= 2) {
-                    Thread.sleep(3_000);
+                    Thread.sleep(8_000);
                     relatorio.fecharRegistro();
                     keepRunning = false;
 
