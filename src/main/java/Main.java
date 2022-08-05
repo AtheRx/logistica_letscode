@@ -58,34 +58,5 @@ public class Main {
 
     }
 
-//    static class ControlaFechamentoRelatorio implements Runnable{
-//        Relatorio relatorio;
-//        public ControlaFechamentoRelatorio(Relatorio relatorio){
-//            this.relatorio = relatorio;
-//        }
-//        @Override
-//        public void run() {
-//            boolean keepRunning = true;
-//            while(keepRunning){
-//
-//                System.out.println(Thread.currentThread());
-//                try {
-//                    //System.out.println(Thread.activeCount());
-//
-//                    if (Thread.activehoCount() <= 2) {
-//                        Thread.sleep(2_000);
-//                        relatorio.fecharRegistro();
-//                        //keepRunning = false;
-//
-//
-//
-//                    }
-//                } catch (Exception e) {
-//
-//                    System.out.printf("O Arquivo já foi fechado.%n" + e.getStackTrace());
-//                }
-//            }
-//        }
-//    }
 
 }
