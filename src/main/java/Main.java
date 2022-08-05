@@ -45,7 +45,7 @@ public class Main {
                 //System.out.println(Thread.activeCount());
 
                 if (Thread.activeCount() <= 2) {
-                    Thread.sleep(2_000);
+                    Thread.sleep(3_000);
                     relatorio.fecharRegistro();
                     keepRunning = false;
 
